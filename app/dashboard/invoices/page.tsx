@@ -19,7 +19,7 @@ export default function InvoiceRoute() {
             <CardTitle className="text-2xl font-bold">Invoices</CardTitle>
             <CardDescription>Manage your invoices right here</CardDescription>
           </div>
-          <Link href="" className={buttonVariants()}>
+          <Link href="/dashboard/invoices/create" className={buttonVariants()}>
             <PlusIcon color="white" />{" "}
             <span className="text-white">Create Invoices</span>
           </Link>
