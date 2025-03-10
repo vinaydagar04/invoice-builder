@@ -3,7 +3,6 @@ import { requireUser } from "../utils/hooks";
 import Link from "next/link";
 import Logo from "@/public/Logo.png";
 import Image from "next/image";
-import { Dashboard } from "@/components/Dashboard";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu, User2 } from "lucide-react";
@@ -18,6 +17,7 @@ import {
 import { signOut } from "../utils/auth";
 import { prisma } from "../utils/db";
 import { redirect } from "next/navigation";
+import { Dashboard } from "../components/Dashboard";
 
 async function getUser(userId: string) {
   const data = await prisma.user.findUnique({
