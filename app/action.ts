@@ -4,8 +4,9 @@ import { requireUser } from "./utils/hooks";
 import { parseWithZod } from "@conform-to/zod";
 import { onboardingSchema } from "./utils/zodSchemas";
 import { prisma } from "./utils/db";
+import { redirect } from "next/navigation";
 
-export async function onboardUser(formData: FormData) {
+export async function onboardUser(prevState: any, formData: FormData) {
   const session = await requireUser();
 
   const submission = parseWithZod(formData, {
@@ -26,4 +27,5 @@ export async function onboardUser(formData: FormData) {
       address: submission.value.address,
     },
   });
+  return redirect("/dashboard");
 }
