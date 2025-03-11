@@ -80,7 +80,6 @@ export async function createInvoice(prevState: any, formData: FormData) {
     .send({
       from: sender,
       to: recipients,
-      subject: "You are awesome!",
       template_uuid: "571a51f8-56b5-427e-aa74-3c589ec7a44b",
       template_variables: {
         clientName: submission.value.clientName,
