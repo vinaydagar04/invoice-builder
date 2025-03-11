@@ -25,6 +25,7 @@ import { createInvoice } from "../action";
 import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { invoiceSchema } from "../utils/zodSchemas";
+import { formatCurrency } from "../utils/formatCurrency";
 
 export function CreateInvoice() {
   const [lastResult, action] = useActionState(createInvoice, undefined);
@@ -42,6 +43,12 @@ export function CreateInvoice() {
   });
 
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [rate, setRate] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [currency, setCurrency] = useState("INR");
+
+  const calculateTotal = (Number(quantity) || 0) * (Number(rate) || 0);
+
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardContent className="p-6">
@@ -50,6 +57,11 @@ export function CreateInvoice() {
             type="hidden"
             name={fields.date.name}
             value={selectedDate.toISOString()}
+          />
+          <input
+            type="hidden"
+            name={fields.total.name}
+            value={calculateTotal}
           />
           <div className="flex flex-col gap-1 w-fit mb-6">
             <div className="flex items-center gap-4">
@@ -92,6 +104,7 @@ export function CreateInvoice() {
                 defaultValue="INR"
                 name={fields.currency.name}
                 key={fields.currency.key}
+                onValueChange={(value) => setCurrency(value)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select Currency" />
@@ -250,6 +263,8 @@ export function CreateInvoice() {
                   defaultValue={fields.invoiceItemQuantity.initialValue}
                   type="number"
                   placeholder="0"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
                 />
                 <p className="text-red-500 text-sm">
                   {fields.invoiceItemQuantity.errors}
@@ -262,13 +277,21 @@ export function CreateInvoice() {
                   defaultValue={fields.invoiceItemRate.initialValue}
                   type="number"
                   placeholder="0"
+                  value={rate}
+                  onChange={(e) => setRate(e.target.value)}
                 />
                 <p className="text-red-500 text-sm">
                   {fields.invoiceItemRate.errors}
                 </p>
               </div>
               <div className="col-span-2">
-                <Input type="number" placeholder="0" disabled />
+                <Input
+                  value={formatCurrency({
+                    amount: calculateTotal,
+                    currency: currency as any,
+                  })}
+                  disabled
+                />
               </div>
             </div>
           </div>
@@ -277,12 +300,20 @@ export function CreateInvoice() {
             <div className="w-1/3">
               <div className="flex justify-between">
                 <span>SubTotal</span>
-                <span>$5.00</span>
+                <span>
+                  {formatCurrency({
+                    amount: calculateTotal,
+                    currency: currency as any,
+                  })}
+                </span>
               </div>
               <div className="flex justify-between py-2 border-t">
-                <span>Total(INR)</span>
+                <span>Total {currency}</span>
                 <span className="font-medium underline underline-offset-2">
-                  $5.00
+                  {formatCurrency({
+                    amount: calculateTotal,
+                    currency: currency as any,
+                  })}
                 </span>
               </div>
             </div>
