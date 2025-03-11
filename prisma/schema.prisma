@@ -87,6 +87,7 @@ model Invoice {
   invoiceName  String
   total   Int
   status   InvoiceStatus
+  date   DateTime
   dueDate    Int
   fromName   String
   fromEmail   String
