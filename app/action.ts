@@ -134,5 +134,34 @@ export async function editInvoice(prevState: any, formData: FormData) {
     },
   });
 
+  const sender = {
+    email: "hello@demomailtrap.co",
+    name: "Mailtrap Test",
+  };
+  const recipients = [
+    {
+      email: "vinaydagar514@gmail.com",
+    },
+  ];
+
+  client
+    .send({
+      from: sender,
+      to: recipients,
+      template_uuid: "1b0ece38-4da1-42cd-8f8a-c7cf3e1c6812",
+      template_variables: {
+        clientName: submission.value.clientName,
+        invoiceNumber: submission.value.invoiceNumber,
+        dueDate: new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(
+          new Date(submission.value.date)
+        ),
+        totalAmount: formatCurrency({
+          amount: submission.value.total,
+          currency: submission.value.currency as any,
+        }),
+        invoiceLink: `http://localhost:3000/api/invoice/${data.id}`,
+      },
+    })
+    .then(console.log, console.error);
   return redirect("/dashboard/invoices");
 }
