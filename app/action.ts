@@ -97,3 +97,18 @@ export async function createInvoice(prevState: any, formData: FormData) {
     .then(console.log, console.error);
   return redirect("/dashboard/invoices");
 }
+
+export async function editInvoice(formData: FormData) {
+  const session = await requireUser();
+  const submission = parseWithZod(formData, {
+    schema: invoiceSchema,
+  });
+
+  if (submission.status !== "success") {
+    return submission.reply();
+  }
+
+  const data = await prisma.invoice.update({
+    
+  })
+}
