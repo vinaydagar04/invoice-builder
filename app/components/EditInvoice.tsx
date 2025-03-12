@@ -25,7 +25,7 @@ import { useActionState, useState } from "react";
 import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { invoiceSchema } from "../utils/zodSchemas";
-import { createInvoice } from "../action";
+import { editInvoice } from "../action";
 import { Prisma } from "@prisma/client";
 
 interface iAppProps {
@@ -33,7 +33,7 @@ interface iAppProps {
 }
 
 export function EditInvoice({ data }: iAppProps) {
-  const [lastResult, action] = useActionState(createInvoice, undefined);
+  const [lastResult, action] = useActionState(editInvoice, undefined);
   const [form, fields] = useForm({
     lastResult,
 
@@ -63,6 +63,7 @@ export function EditInvoice({ data }: iAppProps) {
             name={fields.date.name}
             value={selectedDate.toISOString()}
           />
+          <input type="hidden" name="id" value={data.id} />
           <input
             type="hidden"
             name={fields.total.name}
@@ -346,5 +347,3 @@ export function EditInvoice({ data }: iAppProps) {
     </Card>
   );
 }
-
-
