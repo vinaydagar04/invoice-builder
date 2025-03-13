@@ -19,6 +19,7 @@ import { prisma } from "../utils/db";
 import { redirect } from "next/navigation";
 import { Dashboard } from "../components/Dashboard";
 import { Toaster } from "sonner";
+import { lightFormat } from "date-fns";
 
 async function getUser(userId: string) {
   const data = await prisma.user.findUnique({
@@ -119,7 +120,7 @@ export default async function DashboardLayout({
           </main>
         </div>
       </div>
-      <Toaster richColors closeButton />
+      <Toaster richColors closeButton theme="light" />
     </>
   );
 }
