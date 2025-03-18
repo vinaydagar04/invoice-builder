@@ -6,13 +6,14 @@ import {
 } from "@/components/ui/chart";
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
-const data = [
-  { date: "Nov 5", amount: 400 },
-  { date: "Nov 2", amount: 300 },
-  { date: "Nov 7", amount: 10 },
-];
+interface iAppProps {
+  data: {
+    date: string;
+    amount: number;
+  }[];
+}
 
-export function Graph() {
+export function Graph({ data }: iAppProps) {
   return (
     <ChartContainer
       config={{

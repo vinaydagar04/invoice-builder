@@ -44,14 +44,18 @@ async function getInvoices(userId: string) {
   );
   //   Covert to array and from the object
 
-  const transformedData = Object.entries(aggregatedData).map(
-    ([date, amount]) => ({
+  const transformedData = Object.entries(aggregatedData)
+    .map(([date, amount]) => ({
       date,
       amount,
       originalDate: new Date(date + "," + new Date().getFullYear()),
-    })
-  );
-  return aggregatedData;
+    }))
+    .sort((a, b) => a.originalDate.getTime() - b.originalDate.getTime())
+    .map(({ date, amount }) => ({
+      date,
+      amount,
+    }));
+  return transformedData;
 }
 
 export async function InvoiceGraph() {
@@ -66,7 +70,7 @@ export async function InvoiceGraph() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Graph />
+        <Graph data={data} />
       </CardContent>
     </Card>
   );

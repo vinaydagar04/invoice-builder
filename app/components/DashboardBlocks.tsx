@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Activity, CreditCard, DollarSign, User } from "lucide-react";
 import { prisma } from "../utils/db";
 import { requireUser } from "../utils/hooks";
+import { formatCurrency } from "../utils/formatCurrency";
 
 async function getData(userId: string) {
   const [data, openInvoices, paidInvoices] = await Promise.all([
@@ -54,9 +55,14 @@ export async function DashboardBlocks() {
           </CardHeader>
           <CardContent>
             <h2 className="text-2xl font-bold ">
-              ${data.reduce((acc, invoice) => acc + invoice.total, 0)}
+              {formatCurrency({
+                amount: data.reduce((acc, invoice) => acc + invoice.total, 0),
+                currency: "USD",
+              })}
             </h2>
-            <p>Based on the last 30 days</p>
+            <p className="text-xs text-muted-foreground">
+              Based on the total volume
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -68,7 +74,9 @@ export async function DashboardBlocks() {
           </CardHeader>
           <CardContent>
             <h2 className="text-2xl font-bold ">+{data.length}</h2>
-            <p>Total Invoice Issued!</p>
+            <p className="text-xs text-muted-foreground">
+              Total Invoice Issued!
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -78,19 +86,25 @@ export async function DashboardBlocks() {
           </CardHeader>
           <CardContent>
             <h2 className="text-2xl font-bold ">+{paidInvoices.length}</h2>
-            <p>Total Invoices have been paid!</p>
+            <p className="text-xs text-muted-foreground">
+              Total Invoices have been paid!
+            </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row item-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Open Invoices</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Pending Invoices
+            </CardTitle>
             <Activity className="size-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <h2 className="text-2xl font-bold w-fit ">
               +{openInvoices.length}
             </h2>
-            <p>Invoices which have'nt been paid</p>
+            <p className="text-xs text-muted-foreground">
+              Invoices which are currently pending
+            </p>
           </CardContent>
         </Card>
       </div>
