@@ -22,7 +22,7 @@ export function Hero() {
         </p>
 
         <div className="mt-7 mb-12">
-          <Link className={buttonVariants()} href="/;login">
+          <Link className={buttonVariants()} href="/login">
             <span className="text-white">Get Unlimited Access</span>
           </Link>
         </div>
